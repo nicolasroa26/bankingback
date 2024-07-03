@@ -2,28 +2,36 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-const stripe = require("stripe")("YOUR_STRIPE_SECRET_KEY");
+const stripe = require("stripe")(
+  "sk_test_51PXxKbHEpkFeHCWbAxkHElUquKPl0vU3KmV8X46tlMJ6AYUHSyb81AXtuC8UFIrvWoM9xJhLEAlIsxZxPdCIMHyc00JpQnuogX"
+);
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Conectar a MongoDB
-mongoose.connect("mongodb://localhost:27017/restaurant-app", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const uri =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://nicolas:Brako3006.@cluster0.bc3tvio.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-// Configurar Passport
+mongoose
+  .connect(uri)
+  .then(() => {
+    console.log("Database connected successfully");
+  })
+  .catch((err) => {
+    console.error("Database connection error:", err);
+  });
+
 require("./config/passport")(passport);
 app.use(passport.initialize());
 
-// Rutas
 app.use("/api/users", require("./routes/users"));
 app.use("/api/restaurants", require("./routes/restaurants"));
 app.use("/api/cart", require("./routes/cart"));
 app.use("/api/orders", require("./routes/orders"));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
