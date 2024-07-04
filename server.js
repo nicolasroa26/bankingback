@@ -14,7 +14,7 @@ app.use(cors());
 
 const uri =
   process.env.MONGODB_URI ||
-  "mongodb+srv://nicolas:Brako3006.@cluster0.bc3tvio.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://jortiz:gbJw0LGQRC756CWM@clusterrestaurant.l5s5out.mongodb.net/?retryWrites=true&w=majority&appName=ClusterRestaurant";
 
 mongoose
   .connect(uri)
